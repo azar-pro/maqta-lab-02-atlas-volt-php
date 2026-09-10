@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Atlas Volt</title>
+  <rect width="64" height="64" rx="14" fill="#151718"/>
+  <path d="M34 9 17 35h13l-2 20 19-29H34l0-17Z" fill="#f1a82a"/>
+</svg>
