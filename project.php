@@ -29,6 +29,7 @@ if (!$project) {
 
 $pageTitle = $project['title'] . ' — Atlas Volt Project';
 $pageDescription = $project['summary'];
+$pageImage = $project['image'];
 $currentPage = 'projects';
 require __DIR__ . '/includes/header.php';
 ?>
