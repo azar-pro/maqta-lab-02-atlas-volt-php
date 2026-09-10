@@ -1,5 +1,20 @@
 <?php
-session_start();
+$isHttps = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'secure' => $isHttps,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+    session_start();
+}
+
+if (!headers_sent()) {
+    header('Cache-Control: no-store, max-age=0');
+}
+
 require_once __DIR__ . '/includes/functions.php';
 
 $pageTitle = 'Request a Quote — Atlas Volt';
@@ -30,7 +45,12 @@ $values = [
 $errors = [];
 $success = false;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_GET['sent']) && !empty($_SESSION['quote_success'])) {
+    $success = true;
+    unset($_SESSION['quote_success']);
+}
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     foreach ($values as $key => $unused) {
         $values[$key] = trim((string) ($_POST[$key] ?? ''));
     }
@@ -40,15 +60,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($honeypot !== '') {
         $errors['form'] = 'The submission could not be processed.';
-    } elseif (!hash_equals($_SESSION['csrf_token'], $submittedToken)) {
+    } elseif ($submittedToken === '' || !hash_equals($_SESSION['csrf_token'], $submittedToken)) {
         $errors['form'] = 'Your session expired. Refresh the page and try again.';
     }
 
-    if (mb_strlen($values['name']) < 2) {
-        $errors['name'] = 'Enter at least 2 characters.';
+    $nameLength = text_length($values['name']);
+    if ($nameLength < 2 || $nameLength > 80) {
+        $errors['name'] = 'Enter a name between 2 and 80 characters.';
     }
 
-    if (!filter_var($values['email'], FILTER_VALIDATE_EMAIL)) {
+    if (text_length($values['email']) > 160 || !filter_var($values['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'Enter a valid email address.';
     }
 
@@ -60,18 +81,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['project_type'] = 'Choose a project type.';
     }
 
-    if ($values['city'] === '') {
-        $errors['city'] = 'Enter the project city.';
+    $cityLength = text_length($values['city']);
+    if ($cityLength < 2 || $cityLength > 100) {
+        $errors['city'] = 'Enter a city between 2 and 100 characters.';
     }
 
-    if (mb_strlen($values['message']) < 20) {
-        $errors['message'] = 'Tell us a little more about the project (20+ characters).';
+    $messageLength = text_length($values['message']);
+    if ($messageLength < 20 || $messageLength > 2000) {
+        $errors['message'] = 'Enter project details between 20 and 2000 characters.';
     }
 
     if (!$errors) {
-        $success = true;
-        $values = array_fill_keys(array_keys($values), '');
+        $_SESSION['quote_success'] = true;
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        session_regenerate_id(true);
+        header('Location: quote.php?sent=1', true, 303);
+        exit;
     }
 }
 
@@ -117,7 +142,7 @@ require __DIR__ . '/includes/header.php';
         <p>The form is processed by PHP. No email or database is connected in this learning version.</p>
 
         <?php if ($success): ?>
-          <div class="form-alert success" role="status">Success — PHP accepted the form after validating the fields and CSRF token. No data was sent anywhere.</div>
+          <div class="form-alert success" role="status" tabindex="-1">Success — PHP accepted the form after validating the fields and CSRF token. Refreshing this page will not resubmit the form, and no data was sent anywhere.</div>
         <?php elseif (isset($errors['form'])): ?>
           <div class="form-alert error" role="alert"><?= e($errors['form']) ?></div>
         <?php endif; ?>
@@ -133,43 +158,43 @@ require __DIR__ . '/includes/header.php';
         <div class="form-grid">
           <div class="field">
             <label for="name">Name</label>
-            <input id="name" name="name" type="text" autocomplete="name" value="<?= e($values['name']) ?>" required>
-            <p class="field-error"><?= e($errors['name'] ?? '') ?></p>
+            <input id="name" name="name" type="text" autocomplete="name" maxlength="80" value="<?= e($values['name']) ?>" aria-describedby="nameError" aria-invalid="<?= isset($errors['name']) ? 'true' : 'false' ?>" required>
+            <p class="field-error" id="nameError"><?= e($errors['name'] ?? '') ?></p>
           </div>
 
           <div class="field">
             <label for="email">Email</label>
-            <input id="email" name="email" type="email" autocomplete="email" value="<?= e($values['email']) ?>" required>
-            <p class="field-error"><?= e($errors['email'] ?? '') ?></p>
+            <input id="email" name="email" type="email" autocomplete="email" maxlength="160" value="<?= e($values['email']) ?>" aria-describedby="emailError" aria-invalid="<?= isset($errors['email']) ? 'true' : 'false' ?>" required>
+            <p class="field-error" id="emailError"><?= e($errors['email'] ?? '') ?></p>
           </div>
 
           <div class="field">
             <label for="phone">Phone</label>
-            <input id="phone" name="phone" type="tel" autocomplete="tel" value="<?= e($values['phone']) ?>" placeholder="+212..." required>
-            <p class="field-error"><?= e($errors['phone'] ?? '') ?></p>
+            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" value="<?= e($values['phone']) ?>" placeholder="+212..." aria-describedby="phoneError" aria-invalid="<?= isset($errors['phone']) ? 'true' : 'false' ?>" required>
+            <p class="field-error" id="phoneError"><?= e($errors['phone'] ?? '') ?></p>
           </div>
 
           <div class="field">
             <label for="city">Project city</label>
-            <input id="city" name="city" type="text" value="<?= e($values['city']) ?>" placeholder="Fès" required>
-            <p class="field-error"><?= e($errors['city'] ?? '') ?></p>
+            <input id="city" name="city" type="text" autocomplete="address-level2" maxlength="100" value="<?= e($values['city']) ?>" placeholder="Fès" aria-describedby="cityError" aria-invalid="<?= isset($errors['city']) ? 'true' : 'false' ?>" required>
+            <p class="field-error" id="cityError"><?= e($errors['city'] ?? '') ?></p>
           </div>
 
           <div class="field full">
             <label for="projectType">Project type</label>
-            <select id="projectType" name="project_type" required>
+            <select id="projectType" name="project_type" aria-describedby="projectTypeError" aria-invalid="<?= isset($errors['project_type']) ? 'true' : 'false' ?>" required>
               <option value="">Choose a service</option>
               <?php foreach ($projectTypes as $type): ?>
                 <option value="<?= e($type) ?>" <?= $values['project_type'] === $type ? 'selected' : '' ?>><?= e($type) ?></option>
               <?php endforeach; ?>
             </select>
-            <p class="field-error"><?= e($errors['project_type'] ?? '') ?></p>
+            <p class="field-error" id="projectTypeError"><?= e($errors['project_type'] ?? '') ?></p>
           </div>
 
           <div class="field full">
             <label for="message">Project details</label>
-            <textarea id="message" name="message" placeholder="Tell us about the property, current energy use and what you want to achieve." required><?= e($values['message']) ?></textarea>
-            <p class="field-error"><?= e($errors['message'] ?? '') ?></p>
+            <textarea id="message" name="message" minlength="20" maxlength="2000" placeholder="Tell us about the property, current energy use and what you want to achieve." aria-describedby="messageError" aria-invalid="<?= isset($errors['message']) ? 'true' : 'false' ?>" required><?= e($values['message']) ?></textarea>
+            <p class="field-error" id="messageError"><?= e($errors['message'] ?? '') ?></p>
           </div>
         </div>
 
