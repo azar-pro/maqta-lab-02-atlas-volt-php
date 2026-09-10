@@ -1,10 +1,12 @@
 const menuToggle = document.getElementById('menuToggle');
 const mainNav = document.getElementById('mainNav');
+const siteHeader = document.getElementById('siteHeader');
 
 function closeMenu() {
   if (!menuToggle || !mainNav) return;
   menuToggle.classList.remove('open');
   mainNav.classList.remove('open');
+  if (siteHeader) siteHeader.classList.remove('menu-open');
   menuToggle.setAttribute('aria-expanded', 'false');
   menuToggle.setAttribute('aria-label', 'Open navigation');
   document.body.style.overflow = '';
@@ -14,6 +16,7 @@ if (menuToggle && mainNav) {
   menuToggle.addEventListener('click', () => {
     const open = mainNav.classList.toggle('open');
     menuToggle.classList.toggle('open', open);
+    if (siteHeader) siteHeader.classList.toggle('menu-open', open);
     menuToggle.setAttribute('aria-expanded', String(open));
     menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
     document.body.style.overflow = open ? 'hidden' : '';
