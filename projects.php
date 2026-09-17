@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Projects — Atlas Volt';
-$pageDescription = 'Explore fictional Atlas Volt solar and electrical project case studies across Morocco.';
+$pageDescription = 'Explore Atlas Volt solar and electrical project concept studies across Morocco.';
 $currentPage = 'projects';
 $projects = require __DIR__ . '/data/projects.php';
 require __DIR__ . '/includes/header.php';
@@ -13,7 +13,7 @@ require __DIR__ . '/includes/header.php';
         <p class="eyebrow">Projects</p>
         <h1 class="display">Different sites.<br>Different answers.</h1>
       </div>
-      <p class="lead">Three fictional case studies demonstrate how the same design process changes when the building, load profile and commercial goal change.</p>
+      <p class="lead">Three concept studies demonstrate how the same design process changes when the building, load profile and commercial goal change.</p>
     </div>
   </section>
 
