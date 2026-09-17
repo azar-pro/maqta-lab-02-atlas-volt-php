@@ -6,6 +6,23 @@ $pageDescription = $pageDescription ?? 'Atlas Volt designs modern solar and elec
 $pageImage = $pageImage ?? 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=1200&h=630&q=84';
 $currentPage = $currentPage ?? '';
 
+$siteUrl = 'https://atlasvolt.xo.je';
+$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+if ($requestPath === '/' || $requestPath === '/index.php') {
+    $canonicalUrl = $siteUrl . '/';
+} elseif (basename($requestPath) === 'project.php' && !empty($_GET['slug'])) {
+    $canonicalUrl = $siteUrl . '/project.php?slug=' . rawurlencode((string) $_GET['slug']);
+} else {
+    $canonicalUrl = $siteUrl . $requestPath;
+}
+$schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'WebSite',
+    'name' => 'Atlas Volt',
+    'url' => $siteUrl . '/',
+    'description' => $pageDescription
+];
+
 if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('Referrer-Policy: strict-origin-when-cross-origin');
@@ -21,10 +38,10 @@ if (!headers_sent()) {
     <meta name="description" content="<?= e($pageDescription) ?>">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <meta name="theme-color" content="#151718">
-    <meta name="author" content="MAQTA Studio">
+    <meta name="author" content="MAQTA Studio">\n    <link rel="canonical" href="<?= e($canonicalUrl) ?>">
 
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Atlas Volt">
+    <meta property="og:site_name" content="Atlas Volt">\n    <meta property="og:url" content="<?= e($canonicalUrl) ?>">
     <meta property="og:title" content="<?= e($pageTitle) ?>">
     <meta property="og:description" content="<?= e($pageDescription) ?>">
     <meta property="og:image" content="<?= e($pageImage) ?>">
@@ -42,7 +59,7 @@ if (!headers_sent()) {
     <link rel="preconnect" href="https://images.unsplash.com">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/mobile-menu.css">
+    <link rel="stylesheet" href="assets/css/mobile-menu.css">\n    <script type="application/ld+json"><?= json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
