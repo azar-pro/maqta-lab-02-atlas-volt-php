@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Company — Atlas Volt';
-$pageDescription = 'Learn about the fictional Atlas Volt approach to practical solar and electrical system design in Morocco.';
+$pageDescription = 'Learn about the Atlas Volt approach to practical solar and electrical system design in Morocco.';
 $currentPage = 'about';
 require __DIR__ . '/includes/header.php';
 ?>
@@ -12,7 +12,7 @@ require __DIR__ . '/includes/header.php';
         <p class="eyebrow">Company</p>
         <h1 class="display">Technical work.<br>Clear communication.</h1>
       </div>
-      <p class="lead">Atlas Volt is a fictional energy company concept built around one idea: good engineering should be understandable to the client who pays for it and lives with it.</p>
+      <p class="lead">Atlas Volt is built around one idea: good engineering should be understandable to the client who pays for it and lives with it.</p>
     </div>
   </section>
 
@@ -24,7 +24,7 @@ require __DIR__ . '/includes/header.php';
       </div>
       <div class="rich-copy">
         <p>Energy projects can quickly become a wall of equipment names, technical ratings and optimistic savings claims. Atlas Volt was imagined as the opposite: a technical company that explains the reasoning before the hardware.</p>
-        <p>The fictional team combines solar design, electrical planning and EV charging so that connected systems are considered together instead of being added one by one without a wider plan.</p>
+        <p>The approach combines solar design, electrical planning and EV charging so that connected systems are considered together instead of being added one by one without a wider plan.</p>
       </div>
     </div>
   </section>
@@ -44,12 +44,12 @@ require __DIR__ . '/includes/header.php';
   <section class="section">
     <div class="shell content-grid">
       <div class="sticky-label">
-        <p class="eyebrow">03 · Portfolio context</p>
-        <h2 class="section-title">A PHP learning project.</h2>
+        <p class="eyebrow">03 · Digital experience</p>
+        <h2 class="section-title">Clear from first click to enquiry.</h2>
       </div>
       <div class="rich-copy">
-        <p>This website was created as MAQTA Lab Project 02 to demonstrate a different development approach from a static HTML/CSS/JavaScript website.</p>
-        <p>Reusable header and footer components are rendered with PHP includes, project and service content comes from PHP arrays, individual case studies are generated dynamically from a URL slug, and the quote form performs server-side validation.</p>
+        <p>The digital experience is structured to make technical services easier to explore, compare and understand across devices.</p>
+        <p>Service information, project studies and the quotation journey are connected through a consistent interface designed around clarity and straightforward navigation.</p>
       </div>
     </div>
   </section>
