@@ -23,7 +23,7 @@
     </div>
 
     <div class="shell footer-bottom">
-        <span>© <?= date('Y') ?> Atlas Volt. Fictional portfolio concept.</span>
+        <span>© <?= date('Y') ?> Atlas Volt. Concept website for portfolio demonstration.</span>
         <span>Created by <a href="https://maqtastudio.com" target="_blank" rel="noopener noreferrer">MAQTA STUDIO</a></span>
     </div>
 </footer>
