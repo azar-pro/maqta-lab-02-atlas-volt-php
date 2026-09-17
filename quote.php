@@ -18,7 +18,7 @@ if (!headers_sent()) {
 require_once __DIR__ . '/includes/functions.php';
 
 $pageTitle = 'Request a Quote — Atlas Volt';
-$pageDescription = 'Try the Atlas Volt solar estimator and submit a server-validated fictional project enquiry.';
+$pageDescription = 'Try the Atlas Volt solar estimator and explore the project enquiry experience.';
 $currentPage = 'quote';
 
 $projectTypes = [
@@ -110,7 +110,7 @@ require __DIR__ . '/includes/header.php';
         <p class="eyebrow">Quote + estimator</p>
         <h1 class="display">Start with<br>what you use.</h1>
       </div>
-      <p class="lead">Move the energy-bill slider to see a rough system-size exercise, then use the form to test how PHP validates a submission on the server.</p>
+      <p class="lead">Move the energy-bill slider to explore an indicative system size, then describe the site and project requirements.</p>
     </div>
   </section>
 
@@ -118,7 +118,7 @@ require __DIR__ . '/includes/header.php';
     <div class="shell quote-layout">
       <aside class="estimator" aria-labelledby="estimatorTitle">
         <h2 id="estimatorTitle">Solar estimator</h2>
-        <p>A simplified learning tool—not a real engineering quotation.</p>
+        <p>A simplified planning tool—not a real engineering quotation.</p>
 
         <div class="estimator-field">
           <label for="monthlyBill">Approximate monthly electricity bill</label>
@@ -134,15 +134,15 @@ require __DIR__ . '/includes/header.php';
           <small>Possible annual grid offset</small>
           <strong id="savingOutput">Up to 63%</strong>
         </div>
-        <p style="margin-top:28px;color:rgba(255,255,255,.46);font-size:11px;line-height:1.65">This deliberately uses a simple formula so we can learn JavaScript interaction. Real solar sizing requires site, tariff, production and load-profile analysis.</p>
+        <p style="margin-top:28px;color:rgba(255,255,255,.46);font-size:11px;line-height:1.65">This indicative estimate uses a simplified formula. Real solar sizing requires site, tariff, production and load-profile analysis.</p>
       </aside>
 
       <form class="quote-form" method="post" action="quote.php" novalidate>
         <h2>Tell us about the site</h2>
-        <p>The form is processed by PHP. No email or database is connected in this learning version.</p>
+        <p>Demo enquiry form with server-side validation. No email or database delivery is connected.</p>
 
         <?php if ($success): ?>
-          <div class="form-alert success" role="status" tabindex="-1">Success — PHP accepted the form after validating the fields and CSRF token. Refreshing this page will not resubmit the form, and no data was sent anywhere.</div>
+          <div class="form-alert success" role="status" tabindex="-1">Success — the demo form passed server-side validation. No enquiry data was sent or stored.</div>
         <?php elseif (isset($errors['form'])): ?>
           <div class="form-alert error" role="alert"><?= e($errors['form']) ?></div>
         <?php endif; ?>
@@ -198,7 +198,7 @@ require __DIR__ . '/includes/header.php';
           </div>
         </div>
 
-        <button class="btn btn-amber" type="submit">Validate with PHP ↗</button>
+        <button class="btn btn-amber" type="submit">Submit demo enquiry ↗</button>
       </form>
     </div>
   </section>
