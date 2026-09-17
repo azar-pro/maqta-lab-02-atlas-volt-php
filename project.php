@@ -83,7 +83,7 @@ require __DIR__ . '/includes/header.php';
       </div>
       <div class="rich-copy">
         <p><?= e($project['result']) ?></p>
-        <p><strong>Portfolio note:</strong> this project is fictional. The figures are illustrative and should not be used as engineering calculations for a real solar installation.</p>
+        <p><strong>Concept study:</strong> figures shown are illustrative and are not engineering calculations for a real installation.</p>
       </div>
     </div>
   </section>
