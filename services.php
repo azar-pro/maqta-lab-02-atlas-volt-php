@@ -45,7 +45,7 @@ require __DIR__ . '/includes/header.php';
       <div class="rich-copy">
         <p>Two buildings with the same electricity bill can need very different solutions. One may consume power mainly during the day, another at night. One may have abundant roof area, another a limited service connection.</p>
         <p>That is why every Atlas Volt proposal starts with the operating pattern before equipment is selected. The goal is not to sell the largest possible system. The goal is to make the system match the site.</p>
-        <p>For portfolio purposes, the technical values on this website are illustrative rather than engineering advice for a real installation.</p>
+        
       </div>
     </div>
   </section>
